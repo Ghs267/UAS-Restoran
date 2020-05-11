@@ -3,6 +3,12 @@ defined('BASEPATH') or exit('No direct script access allowed');
 
 class Menu extends CI_Controller
 {
+    public function __construct()
+    {
+        parent::__construct();
+        $this->load->model('Menu_model', 'menu');
+    }
+
     public function index()
     {
         $data['title'] = 'Menu Management';
@@ -25,12 +31,13 @@ class Menu extends CI_Controller
             redirect('menu');
         }
     }
+
     public function submenu()
     {
         $data['title'] = 'Submenu Management';
         $data['user'] = $this->db->get_where('user', ['email' =>
         $this->session->userdata('email')])->row_array();
-        $this->load->model('Menu_model', 'menu');
+
         $data['subMenu'] = $this->menu->getSubMenu();
         $data['menu'] = $this->db->get('user_menu')->result_array();
 
@@ -58,5 +65,35 @@ class Menu extends CI_Controller
                     New Sub Menu Added!</div>');
             redirect('menu/submenu');
         }
+    }
+
+    public function editMenu($id)
+    {
+        $this->db->update('user_menu', ['menu' => $this->input->post('menu')], ['id' => $id]);
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">The menu has ben edited!</div>');
+        redirect('menu');
+    }
+
+    public function deleteMenu($id)
+    {
+        $this->db->delete('user_menu', ['id' => $id]);
+        $this->db->delete('user_sub_menu', ['menu_id' => $id]);
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">The menu has ben deleted!</div>');
+        redirect('menu');
+    }
+
+    public function editSubMenu($id)
+    {
+        $this->menu->saveSubMenu($id);
+
+        $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">The menu has ben edited!</div>');
+        redirect('menu/submenu');
+    }
+
+    public function deleteSubMenu($id)
+    {
+        $this->menu->deleteSubMenu($id);
+        $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">The menu has ben deleted!</div>');
+        redirect('menu/submenu');
     }
 }
