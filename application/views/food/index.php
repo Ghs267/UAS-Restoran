@@ -29,7 +29,7 @@
                             <th scope="row"><?= $i; ?></th>
                             <td><?= $f['name']; ?></td>
                             <td><?= $f['category']; ?></td>
-                            <td><?= $f['price']; ?></td>
+                            <td>Rp. <?= $f['price']; ?></td>
                             <td><?= $f['stock']; ?></td>
                         </tr>
                         <?php $i++; ?>

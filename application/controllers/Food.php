@@ -6,6 +6,7 @@ class Food extends CI_Controller
     public function __construct()
     {
         parent::__construct();
+        $this->load->model('Food_model', 'food');
         is_logged_in();
     }
     public function index()
@@ -13,7 +14,7 @@ class Food extends CI_Controller
         $data['title'] = 'Food Menu';
         $data['user'] = $this->db->get_where('user', ['email' =>
         $this->session->userdata('email')])->row_array();
-        $data['food'] = $this->db->get('food')->result_array();
+        $data['food'] = $this->food->getFood();
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
