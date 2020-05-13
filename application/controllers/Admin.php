@@ -97,7 +97,7 @@ class Admin extends CI_Controller
         $this->session->userdata('email')])->row_array();
 
         $data['food'] = $this->food->getFood();
-        $data['menu'] = $this->db->get('category')->result_array();
+        $data['cat'] = $this->db->get('category')->result_array();
 
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('price', 'Price', 'required');
@@ -143,8 +143,8 @@ class Admin extends CI_Controller
         $data['user'] = $this->db->get_where('user', ['email' =>
         $this->session->userdata('email')])->row_array();
 
-        $data['food'] = $this->food->getDrink();
-        $data['menu'] = $this->db->get('category_d')->result_array();
+        $data['drink'] = $this->food->getDrink();
+        $data['cat'] = $this->db->get('category_d')->result_array();
 
         $this->form_validation->set_rules('name', 'Name', 'required');
         $this->form_validation->set_rules('price', 'Price', 'required');

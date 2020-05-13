@@ -3,6 +3,8 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
+
+
     <div class="row">
         <div class="col-lg">
             <?php if (validation_errors()) : ?>
@@ -13,7 +15,7 @@
 
             <?= $this->session->flashdata('messages'); ?>
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFoodModal">Add Restaurant Menu</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFoodModal">Add Menu</a>
             <table class="table table-hover">
                 <thead>
                     <th scope="col">#</th>
@@ -66,8 +68,8 @@
                     <div class="form-group">
                         <select name="category" id="category" class="form-control">
                             <option value="">Select Menu</option>
-                            <?php foreach ($menu as $m) : ?>
-                                <option value="<?= $m['id']; ?>"><?= $m['category']; ?></option>
+                            <?php foreach ($cat as $c) : ?>
+                                <option value="<?= $c['id']; ?>"><?= $c['category']; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
@@ -77,7 +79,6 @@
                     <div class="form-group">
                         <input type="text" class="form-control" name="stock" id="stock" placeholder="Stock">
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -105,11 +106,11 @@
                         <div class="form-group">
                             <select name="category" id="category" class="form-control">
                                 <option>Select Category</option>
-                                <?php foreach ($menu as $mm) : ?>
-                                    <?php if ($fd['category'] == $mm['id']) : ?>
-                                        <option value="<?= $mm['id']; ?>" selected> <?= $mm['category']; ?> </option>
+                                <?php foreach ($cat as $ct) : ?>
+                                    <?php if ($fd['category'] == $ct['category']) : ?>
+                                        <option value="<?= $ct['id']; ?>" selected> <?= $ct['category']; ?> </option>
                                     <?php else : ?>
-                                        <option value="<?= $mm['id']; ?>"> <?= $mm['category']; ?> </option>
+                                        <option value="<?= $ct['id']; ?>"> <?= $ct['category']; ?> </option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>

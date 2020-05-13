@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 13 Bulan Mei 2020 pada 05.47
+-- Waktu pembuatan: 13 Bulan Mei 2020 pada 13.30
 -- Versi server: 10.4.6-MariaDB
 -- Versi PHP: 7.3.8
 
@@ -38,8 +38,52 @@ CREATE TABLE `category` (
 --
 
 INSERT INTO `category` (`id`, `category`) VALUES
-(1, 'Food'),
-(2, 'Drink');
+(1, 'Main Course'),
+(2, 'Snack');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `category_d`
+--
+
+CREATE TABLE `category_d` (
+  `id` int(11) NOT NULL,
+  `category` varchar(128) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `category_d`
+--
+
+INSERT INTO `category_d` (`id`, `category`) VALUES
+(1, 'Soft Drink'),
+(2, 'Juice');
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `drink`
+--
+
+CREATE TABLE `drink` (
+  `id` int(11) NOT NULL,
+  `name` varchar(128) NOT NULL,
+  `category` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
+  `stock` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data untuk tabel `drink`
+--
+
+INSERT INTO `drink` (`id`, `name`, `category`, `price`, `stock`) VALUES
+(1, 'Jus ALPUKAT', 0, 12000, 12),
+(2, 'Soda Gembira', 1, 18000, 12),
+(3, 'Jus ALPUKAT', 2, 12000, 12),
+(5, 'Jus Kedondong', 2, 12000, 12),
+(6, 'Fresh milk boba', 1, 35000, 12);
 
 -- --------------------------------------------------------
 
@@ -60,10 +104,24 @@ CREATE TABLE `food` (
 --
 
 INSERT INTO `food` (`id`, `name`, `category`, `price`, `stock`) VALUES
-(1, 'Babi Goreng', '1', 30000, 100),
-(3, 'Kwetiau Goreng', '1', 35000, 14),
-(4, 'Cendol', '2', 35000, 14),
-(5, 'Ayam Geprek', '1', 18000, 20);
+(5, 'Ayam Geprek', '1', 18000, 20),
+(9, 'Babi Goreng', '1', 35000, 12),
+(10, 'Nasi Goreng Babi', '1', 35000, 12),
+(11, 'Kwetiau siram sapi', '1', 35000, 35),
+(12, 'Siomay (5pcs)', '2', 25000, 12);
+
+-- --------------------------------------------------------
+
+--
+-- Struktur dari tabel `shop_cart`
+--
+
+CREATE TABLE `shop_cart` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `food_id` int(11) NOT NULL,
+  `food_qty` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -116,8 +174,7 @@ INSERT INTO `user_access_menu` (`id`, `role_id`, `menu_id`) VALUES
 (13, 2, 8),
 (14, 1, 8),
 (15, 1, 9),
-(16, 2, 9),
-(17, 1, 3);
+(16, 2, 9);
 
 -- --------------------------------------------------------
 
@@ -187,7 +244,10 @@ INSERT INTO `user_sub_menu` (`id`, `menu_id`, `title`, `url`, `icon`, `is_active
 (10, 1, 'Role', 'admin/role', 'fas fa-fw fa-user-tie', 1),
 (16, 2, 'Change Password', 'user/changepassword', 'fas fa-fw fa-key', 1),
 (20, 9, 'Food Menu', 'food', 'fas fa-fw fa-utensils', 1),
-(21, 1, 'Food Management', 'admin/food', 'fas fa-fw fa-utensils', 1);
+(22, 1, 'Food Management', 'admin/food', 'fas fa-fw fa-utensils', 1),
+(24, 1, 'Drink Management', 'admin/drink', 'fas fa-fw fa-glass-cheers', 1),
+(25, 9, 'Drink Menu', 'food/drink', 'fas fa-fw fa-glass-cheers', 1),
+(26, 9, 'Shopping Cart', 'food/shop', 'fas fa-shopping-cart', 1);
 
 --
 -- Indexes for dumped tables
@@ -200,9 +260,27 @@ ALTER TABLE `category`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indeks untuk tabel `category_d`
+--
+ALTER TABLE `category_d`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `drink`
+--
+ALTER TABLE `drink`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indeks untuk tabel `food`
 --
 ALTER TABLE `food`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeks untuk tabel `shop_cart`
+--
+ALTER TABLE `shop_cart`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -246,10 +324,28 @@ ALTER TABLE `category`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT untuk tabel `category_d`
+--
+ALTER TABLE `category_d`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT untuk tabel `drink`
+--
+ALTER TABLE `drink`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT untuk tabel `food`
 --
 ALTER TABLE `food`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
+-- AUTO_INCREMENT untuk tabel `shop_cart`
+--
+ALTER TABLE `shop_cart`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT untuk tabel `user`
@@ -261,7 +357,7 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT untuk tabel `user_access_menu`
 --
 ALTER TABLE `user_access_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT untuk tabel `user_menu`
@@ -279,7 +375,7 @@ ALTER TABLE `user_role`
 -- AUTO_INCREMENT untuk tabel `user_sub_menu`
 --
 ALTER TABLE `user_sub_menu`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
