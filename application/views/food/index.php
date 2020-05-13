@@ -21,6 +21,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Price</th>
                     <th scope="col">Stock</th>
+                    <th scope="col">Action</th>
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
@@ -31,6 +32,9 @@
                             <td><?= $f['category']; ?></td>
                             <td>Rp. <?= $f['price']; ?></td>
                             <td><?= $f['stock']; ?></td>
+                            <td>
+                                <a href="" class="badge badge-warning"><i class="far fa-fw fa-edit"></i></a>
+                            </td>
                         </tr>
                         <?php $i++; ?>
                     <?php endforeach; ?>
