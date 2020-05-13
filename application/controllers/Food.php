@@ -22,6 +22,7 @@ class Food extends CI_Controller
         $this->load->view('food/index', $data);
         $this->load->view('templates/footer');
     }
+
     public function shop()
     {
         $data['title'] = 'Shopping Cart';
@@ -32,6 +33,20 @@ class Food extends CI_Controller
         $this->load->view('templates/sidebar', $data);
         $this->load->view('templates/topbar', $data);
         $this->load->view('food/shop', $data);
+        $this->load->view('templates/footer');
+    }
+
+    public function drink()
+    {
+        $data['title'] = 'Drink Menu';
+        $data['user'] = $this->db->get_where('user', ['email' =>
+        $this->session->userdata('email')])->row_array();
+        $data['drink'] = $this->food->getDrink();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('food/drink', $data);
         $this->load->view('templates/footer');
     }
 }

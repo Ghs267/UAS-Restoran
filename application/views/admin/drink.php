@@ -13,7 +13,7 @@
 
             <?= $this->session->flashdata('messages'); ?>
 
-            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFoodModal">Add Restaurant Menu</a>
+            <a href="" class="btn btn-primary mb-3" data-toggle="modal" data-target="#newFoodModal">Add Menu</a>
             <table class="table table-hover">
                 <thead>
                     <th scope="col">#</th>
@@ -34,7 +34,7 @@
                             <td><?= $f['stock']; ?></td>
                             <td>
                                 <a href="" data-toggle="modal" data-target="#editSubMenuModal<?= $f['id'] ?>" class="badge badge-success"><i class="far fa-fw fa-edit"></i></a>
-                                <a href="<?= base_url('admin/deleteFood/' . $f['id']) ?>" class="badge badge-danger" onclick="return confirm('Are you sure want to delete <?= $f['name']; ?> ?')"><i class="far fa-fw fa-trash-alt"></i></a>
+                                <a href="<?= base_url('admin/deleteDrink/' . $f['id']) ?>" class="badge badge-danger" onclick="return confirm('Are you sure want to delete <?= $f['name']; ?> ?')"><i class="far fa-fw fa-trash-alt"></i></a>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -58,14 +58,14 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form action="<?= base_url('admin/food'); ?>" method="post">
+            <form action="<?= base_url('admin/drink'); ?>" method="post">
                 <div class="modal-body">
                     <div class="form-group">
-                        <input type="text" class="form-control" name="name" id="name" placeholder="Food Menu">
+                        <input type="text" class="form-control" name="name" id="name" placeholder="Drink Menu">
                     </div>
                     <div class="form-group">
                         <select name="category" id="category" class="form-control">
-                            <option value="">Select Menu</option>
+                            <option value="">Select Category</option>
                             <?php foreach ($menu as $m) : ?>
                                 <option value="<?= $m['id']; ?>"><?= $m['category']; ?></option>
                             <?php endforeach; ?>
@@ -97,7 +97,7 @@
                         <span aria-hidden="true">&times;</span>
                     </buttond>
                 </div>
-                <form action="<?= base_url('admin/editFood/' . $fd['id']); ?>" method="post">
+                <form action="<?= base_url('admin/editDrink/' . $fd['id']); ?>" method="post">
                     <div class="modal-body">
                         <div class="form-group">
                             <input type="text" class="form-control" value="<?= $fd['name'] ?>" id="name" name="name" placeholder="Submenu title">
