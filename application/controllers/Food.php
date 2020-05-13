@@ -22,4 +22,16 @@ class Food extends CI_Controller
         $this->load->view('food/index', $data);
         $this->load->view('templates/footer');
     }
+    public function shop()
+    {
+        $data['title'] = 'Shopping Cart';
+        $data['user'] = $this->db->get_where('user', ['email' =>
+        $this->session->userdata('email')])->row_array();
+
+        $this->load->view('templates/header', $data);
+        $this->load->view('templates/sidebar', $data);
+        $this->load->view('templates/topbar', $data);
+        $this->load->view('food/shop', $data);
+        $this->load->view('templates/footer');
+    }
 }
