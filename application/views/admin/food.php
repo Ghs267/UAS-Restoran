@@ -107,9 +107,9 @@
                                 <option>Select Category</option>
                                 <?php foreach ($menu as $mm) : ?>
                                     <?php if ($fd['category'] == $mm['id']) : ?>
-                                        <option value="<?= $mm['id']; ?>" selected> <?= $mm['food_menu']; ?> </option>
+                                        <option value="<?= $mm['id']; ?>" selected> <?= $mm['category']; ?> </option>
                                     <?php else : ?>
-                                        <option value="<?= $mm['id']; ?>"> <?= $mm['food_menu']; ?> </option>
+                                        <option value="<?= $mm['id']; ?>"> <?= $mm['category']; ?> </option>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </select>
