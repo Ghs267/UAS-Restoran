@@ -36,7 +36,7 @@
                             <td>Rp. <?= $f['price']; ?></td>
                             <td><?= $f['stock']; ?></td>
                             <td>
-                                <a href="" data-toggle="modal" data-target="#editSubMenuModal<?= $f['id'] ?>" class="badge badge-success"><i class="far fa-fw fa-edit"></i></a>
+                                <a href="" data-toggle="modal" data-target="#editMenu<?= $f['id'] ?>" class="badge badge-success"><i class="far fa-fw fa-edit"></i></a>
                                 <a href="<?= base_url('admin/deleteFood/' . $f['id']) ?>" class="badge badge-danger" onclick="return confirm('Are you sure want to delete <?= $f['name']; ?> ?')"><i class="far fa-fw fa-trash-alt"></i></a>
                             </td>
                         </tr>
@@ -90,11 +90,11 @@
     </div>
 </div>
 <?php foreach ($food as $fd) : ?>
-    <div class="modal fade" id="editSubMenuModal<?= $fd['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="editSubMenuModal<?= $fd['id'] ?>Label" aria-hidden="true">
+    <div class="modal fade" id="editMenu<?= $fd['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="editMenu<?= $fd['id'] ?>Label" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editSubMenuModal<?= $fd['id'] ?>Label">Edit Menu</h5>
+                    <h5 class="modal-title" id="editMenu<?= $fd['id'] ?>Label">Edit Menu</h5>
                     <buttond type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </buttond>
@@ -102,7 +102,7 @@
                 <form action="<?= base_url('admin/editFood/' . $fd['id']); ?>" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['name'] ?>" id="name" name="name" placeholder="Submenu Menu">
+                            <input type="text" class="form-control" value="<?= $fd['name'] ?>" id="name" name="name" placeholder="Menu">
                         </div>
                         <div class="form-group">
                             <select name="category" id="category" class="form-control">
@@ -117,10 +117,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['price'] ?>" id="price" name="price" placeholder="Price">
+                            <input type="number" class="form-control" value="<?= $fd['price'] ?>" id="price" name="price" placeholder="Price">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['stock'] ?>" id="stock" name="stock" placeholder="Stock">
+                            <input type="number" class="form-control" value="<?= $fd['stock'] ?>" id="stock" name="stock" placeholder="Stock">
                         </div>
 
                     </div>

@@ -9,6 +9,7 @@
             <th scope="col">Name</th>
             <th scope="col">QTY</th>
             <th scope="col">Price</th>
+            <th scope="col">Total Price</th>
         <tbody>
 
         </tbody>

@@ -16,11 +16,16 @@ class Food extends CI_Controller
         $this->session->userdata('email')])->row_array();
         $data['food'] = $this->food->getFood();
 
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('food/index', $data);
-        $this->load->view('templates/footer');
+        $this->form_validation->set_rules('qty', 'Qty', 'required');
+
+
+        if ($this->form_validation->run() == false) {
+            $this->load->view('templates/header', $data);
+            $this->load->view('templates/sidebar', $data);
+            $this->load->view('templates/topbar', $data);
+            $this->load->view('food/index', $data);
+            $this->load->view('templates/footer');
+        }
     }
 
     public function shop()
@@ -28,6 +33,8 @@ class Food extends CI_Controller
         $data['title'] = 'Shopping Cart';
         $data['user'] = $this->db->get_where('user', ['email' =>
         $this->session->userdata('email')])->row_array();
+
+        $this->form_validation->set_rules('name', 'Name', 'required');
 
         $this->load->view('templates/header', $data);
         $this->load->view('templates/sidebar', $data);
