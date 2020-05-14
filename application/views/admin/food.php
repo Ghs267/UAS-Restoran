@@ -101,7 +101,7 @@
                 <form action="<?= base_url('admin/editFood/' . $fd['id']); ?>" method="post">
                     <div class="modal-body">
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['name'] ?>" id="name" name="name" placeholder="Submenu title">
+                            <input type="text" class="form-control" value="<?= $fd['name'] ?>" id="name" name="name" placeholder="Submenu Menu">
                         </div>
                         <div class="form-group">
                             <select name="category" id="category" class="form-control">
@@ -116,10 +116,10 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['price'] ?>" id="price" name="price" placeholder="Submenu url">
+                            <input type="text" class="form-control" value="<?= $fd['price'] ?>" id="price" name="price" placeholder="Price">
                         </div>
                         <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['stock'] ?>" id="stock" name="stock" placeholder="Submenu icon">
+                            <input type="text" class="form-control" value="<?= $fd['stock'] ?>" id="stock" name="stock" placeholder="Stock">
                         </div>
 
                     </div>

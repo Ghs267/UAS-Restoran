@@ -11,7 +11,7 @@ class Food extends CI_Controller
     }
     public function index()
     {
-        $data['title'] = 'Food Menu';
+        $data['title'] = 'Food and Drink Menu';
         $data['user'] = $this->db->get_where('user', ['email' =>
         $this->session->userdata('email')])->row_array();
         $data['food'] = $this->food->getFood();

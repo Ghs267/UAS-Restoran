@@ -31,7 +31,14 @@
                             <td><?= $f['name']; ?></td>
                             <td><?= $f['category']; ?></td>
                             <td>Rp. <?= $f['price']; ?></td>
-                            <td><?= $f['stock']; ?></td>
+                            <?php if ($f['stock'] >= 10) : ?>
+                                <td>Tersedia</td>
+                            <?php elseif ($f['stock'] >= 5) : ?>
+                                <td>Terbatas</td>
+                            <?php elseif ($f['stock'] <= 4) : ?>
+                                <td>Hampir habis</td>
+                            <?php endif; ?>
+
                             <td>
                                 <a href="" class="badge badge-warning"><i class="far fa-fw fa-edit"></i></a>
                             </td>
