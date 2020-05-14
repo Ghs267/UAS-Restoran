@@ -15,7 +15,7 @@
 
             <?= $this->session->flashdata('messages'); ?>
 
-            <a href="" class="btn btn-primary " data-toggle="modal" data-target="#newFoodModal">Add Menu</a>
+            <a href="" class="btn btn-primary mb-3 " data-toggle="modal" data-target="#newFoodModal">Add Menu</a>
 
             <table class="table table-hover">
                 <thead>
