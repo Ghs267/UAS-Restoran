@@ -62,7 +62,8 @@ class User extends CI_Controller
                     $new_foto = $this->upload->data('file_name');
                     $this->db->set('image', $new_foto);
                 } else {
-                    echo $this->upload->display_errors();
+                    $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">' . $this->upload->display_errors() . '</div>');
+                    redirect('user');
                 }
             }
 
