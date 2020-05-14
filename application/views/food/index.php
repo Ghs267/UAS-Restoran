@@ -13,7 +13,6 @@
 
             <?= $this->session->flashdata('messages'); ?>
 
-
             <table class="table table-hover">
                 <thead>
                     <th scope="col">#</th>
