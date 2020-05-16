@@ -17,7 +17,7 @@
                 <thead>
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
-                    <th scope="col">Category</th>
+                    <th scope="col">Gambar</th>
                     <th scope="col">Price</th>
                     <th scope="col">Stock</th>
                     <th scope="col">Action</th>
@@ -28,7 +28,7 @@
                         <tr>
                             <th scope="row"><?= $i; ?></th>
                             <td><?= $f['name']; ?></td>
-                            <td><?= $f['category']; ?></td>
+                            <td><div><img src="<?= $f['gambar']; ?>" style="width:5em;height:5em;"></div></td>
                             <td>Rp. <?= $f['price']; ?></td>
                             <?php if ($f['stock'] >= 10) : ?>
                                 <td>Tersedia</td>
@@ -38,7 +38,8 @@
                                 <td>Hampir habis</td>
                             <?php endif; ?>
                             <td>
-                                <a href="" class="badge badge-primary" data-toggle="modal" data-target="#addShop<?= $f['id'] ?>"><i class="fas fa-fw fa-shopping-cart"></i></a>
+                            <button style="display:block;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?php echo $f['id'];?>" data-productname="<?php echo $f['name'];?>" data-productprice="<?php echo $f['price'];?>" onClick="shopping_<?= $f['id'] ?>();"><i class="fas fa-fw fa-shopping-cart"></i></button>
+                            <input type="number" value="1" style="display:none;" id="qty<?= $f['id'] ?>" name="qty">
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -53,35 +54,17 @@
 
 </div>
 <!-- End of Main Content -->
-<?php foreach ($food as $fd) : ?>
-    <div class="modal fade" id="addShop<?= $fd['id'] ?>" tabindex="-1" role="dialog" aria-labelledby="addShop<?= $fd['id'] ?>Label" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addShop<?= $fd['id'] ?>Label">Add Menu to Shopping Cart</h5>
-                    <buttond type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </buttond>
-                </div>
-                <form action="" method="post">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['name'] ?>" id="name" name="name" placeholder=" Menu" readonly>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" value="<?= $fd['price'] ?>" id="price" name="price" placeholder="Price" readonly>
-                        </div>
-                        <div class="form-group">
-                            <input type="number" class="form-control" id="qty" name="qty" placeholder="Qty">
-                        </div>
 
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                        <button type="submit" class="btn btn-primary">Add to Chart</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
+
+<script type="text/javascript">
+<?php foreach ($food as $fo): ?>
+    function shopping_<?= $fo['id'] ?>(){
+        // var product_id    = $(this).data("productid");
+        // var product_name  = $(this).data("productname");
+        // var product_price = $(this).data("productprice");
+        // var quantity      = 1;
+        document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "none";
+        document.getElementById('qty<?= $fo['id'] ?>').style.display = "block";
+    }
 <?php endforeach; ?>
+</script>
