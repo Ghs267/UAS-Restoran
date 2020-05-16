@@ -39,7 +39,7 @@
                             <?php endif; ?>
                             <td>
                             <button style="display:block;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?php echo $f['id'];?>" data-productname="<?php echo $f['name'];?>" data-productprice="<?php echo $f['price'];?>" onClick="shopping_<?= $f['id'] ?>();"><i class="fas fa-fw fa-shopping-cart"></i></button>
-                            <input type="number" value="1" style="display:none;" id="qty<?= $f['id'] ?>" name="qty">
+                            <div id="qty_div<?= $f['id'] ?>" style="display:none;"><button onClick="minus_item_<?= $f['id'] ?>();" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button><input type="text" value="0" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;"><button onClick="plus_item_<?= $f['id'] ?>();" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button></div>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -57,14 +57,36 @@
 
 
 <script type="text/javascript">
-<?php foreach ($food as $fo): ?>
-    function shopping_<?= $fo['id'] ?>(){
-        // var product_id    = $(this).data("productid");
-        // var product_name  = $(this).data("productname");
-        // var product_price = $(this).data("productprice");
-        // var quantity      = 1;
-        document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "none";
-        document.getElementById('qty<?= $fo['id'] ?>').style.display = "block";
-    }
+    <?php foreach ($food as $fo): ?>
+        function shopping_<?= $fo['id'] ?>(){
+            // var product_id    = $(this).data("productid");
+            // var product_name  = $(this).data("productname");
+            // var product_price = $(this).data("productprice");
+            // var quantity      = 1;
+            document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "none";
+            document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "flex";
+            var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
+            qty++;
+            document.getElementById('qty<?= $fo['id'] ?>').value = qty;
+        }
+        function minus_item_<?= $fo['id'] ?>(){
+            var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
+            if(qty == 1){
+                confirm("Doing this will remove the item from shopping cart. Continue?");
+            }
+            qty--;
+            document.getElementById('qty<?= $fo['id'] ?>').value = qty;
+
+            if(qty<=0){
+                document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "block";
+                document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "none";
+            }
+        }
+
+        function plus_item_<?= $fo['id'] ?>(){
+            var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
+            qty++;
+            document.getElementById('qty<?= $fo['id'] ?>').value = qty;
+        }
 <?php endforeach; ?>
 </script>
