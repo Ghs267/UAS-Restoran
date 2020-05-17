@@ -20,7 +20,7 @@
                     <th scope="col">Gambar</th>
                     <th scope="col">Price</th>
                     <th scope="col">Stock</th>
-                    <th scope="col">Action</th>
+                    <th style="width:8em;">Action</th>
                 </thead>
                 <tbody>
                     <?php $i = 1; ?>
@@ -38,8 +38,18 @@
                                 <td>Hampir habis</td>
                             <?php endif; ?>
                             <td>
-                            <button style="display:block;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?php echo $f['id'];?>" data-productname="<?php echo $f['name'];?>" data-productprice="<?php echo $f['price'];?>" onClick="shopping_<?= $f['id'] ?>();"><i class="fas fa-fw fa-shopping-cart"></i></button>
-                            <div id="qty_div<?= $f['id'] ?>" style="display:none;"><button onClick="minus_item_<?= $f['id'] ?>();" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button><input type="text" value="0" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;"><button onClick="plus_item_<?= $f['id'] ?>();" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button></div>
+                            <button style="display:block; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" onClick="shopping_<?= $f['id'] ?>();">
+                                <i class="fas fa-fw fa-shopping-cart"></i>
+                            </button>
+                            <!-- insert PHP IF for isset cookie here -->
+                            
+                            <!-- make a loop to check each cookie element, break if found??? maybe I haven't figured that out halp TwT -->
+
+                            <!-- Below should become else statement from the PHP isset cookie -->
+                            <div id="qty_div<?= $f['id'] ?>" style="display:none; width:7em;">
+                                <button onClick="change_qty_<?= $f['id'] ?>(-1);" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button>
+                                <input type="text" value="0" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;">
+                                <button onClick="change_qty_<?= $f['id'] ?>(1);" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button></div>
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -52,12 +62,11 @@
 </div>
 <!-- /.container-fluid -->
 
-</div>
 <!-- End of Main Content -->
 
-
-<script type="text/javascript">
-    <?php foreach ($food as $fo): ?>
+<!-- Shopping Cart Button below -->
+<?php foreach ($food as $fo): ?>
+    <script type="text/javascript">
         function shopping_<?= $fo['id'] ?>(){
             // var product_id    = $(this).data("productid");
             // var product_name  = $(this).data("productname");
@@ -69,12 +78,10 @@
             qty++;
             document.getElementById('qty<?= $fo['id'] ?>').value = qty;
         }
-        function minus_item_<?= $fo['id'] ?>(){
+
+        function change_qty_<?= $fo['id'] ?>(count){
             var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
-            if(qty == 1){
-                confirm("Doing this will remove the item from shopping cart. Continue?");
-            }
-            qty--;
+            qty += count;
             document.getElementById('qty<?= $fo['id'] ?>').value = qty;
 
             if(qty<=0){
@@ -82,11 +89,5 @@
                 document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "none";
             }
         }
-
-        function plus_item_<?= $fo['id'] ?>(){
-            var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
-            qty++;
-            document.getElementById('qty<?= $fo['id'] ?>').value = qty;
-        }
+    </script>
 <?php endforeach; ?>
-</script>
