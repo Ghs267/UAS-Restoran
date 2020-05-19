@@ -57,7 +57,7 @@
                 </tbody>
 
             </table>
-            <button onClick="print_cart();">Check shopping cart</button>
+            <button onClick="getCookie('shopping_cart');">Check shopping cart cookie</button>
         </div>
     </div>
 </div>
@@ -93,6 +93,7 @@
             };
 
             cart.push(item_<?= $fo['id'] ?>);
+            setCookie(cart, 1);
 
         }
         function change_qty_<?= $fo['id'] ?>(count){
@@ -107,6 +108,7 @@
                 remove_item(item_<?= $fo['id'] ?>['product_id']);
             }
             update_qty(item_<?= $fo['id'] ?>['product_id'], qty);
+            setCookie(cart, 1);
         }
 
         
@@ -130,15 +132,42 @@
             }
         }
 
-    // function setCookie(cname, cvalue, exdays) {
-    //     var d = new Date();
-    //     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-    //     var expires = "expires="+d.toUTCString();
-    //     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-    // }
+    function setCookie(cvalue, exdays) {
+        var d = new Date();
+        d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+        var expires = "expires="+d.toUTCString();
+        document.cookie = 'shopping_cart' + "=" + JSON.stringify(cvalue) + ";" + expires + ";path=/";
+    }
     
         function print_cart(){
-            console.log(cart);
+            console.log(JSON.stringify(cart));
+        }
+
+        // function bakeCookie(value){
+        //     var cookie = ['shopping_cart', '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
+        //     document.cookie = cookie;
+        // }
+
+        // function read_cookie() {
+        //     var result = document.cookie.match(new RegExp('shopping_cart' + '=([^;]+)'));
+        //     result && (result = JSON.parse(result[1]));
+        //     console.log(result);
+        // }
+
+        function getCookie(cname) {
+            var name = cname + "=";
+            var ca = document.cookie.split(';');
+            //console.log(ca);
+            for(var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                console.log(c.substring(name.length, c.length));
+                }
+            }
+            return "";
         }
 
 </script>
