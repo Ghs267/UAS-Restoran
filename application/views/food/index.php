@@ -12,7 +12,7 @@
             <?php endif; ?>
 
             <?= $this->session->flashdata('messages'); ?>
-
+            <input type="hidden" id="hdnSession" data-value="<?= $_SESSION['email'] ?>">
             <table class="table table-hover">
                 <thead>
                     <th scope="col">#</th>
@@ -38,7 +38,7 @@
                                 <td>Hampir habis</td>
                             <?php endif; ?>
                             <td>
-                            <button style="display:block; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" onClick="shopping_<?= $f['id'] ?>();">
+                            <button style="display:block; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" data-productpic="<?= $f['gambar'] ?>" onClick="shopping_<?= $f['id'] ?>();">
                                 <i class="fas fa-fw fa-shopping-cart"></i>
                             </button>
                             <!-- insert PHP IF for isset cookie here -->
@@ -57,6 +57,7 @@
                 </tbody>
 
             </table>
+            <button onClick="print_cart();">Check shopping cart</button>
         </div>
     </div>
 </div>
@@ -65,20 +66,35 @@
 <!-- End of Main Content -->
 
 <!-- Shopping Cart Button below -->
-<?php foreach ($food as $fo): ?>
-    <script type="text/javascript">
+<script type="text/javascript">
+    var cart = [];
+    <?php foreach ($food as $fo): ?>
+        var item_<?= $fo['id'] ?> = "";
+
         function shopping_<?= $fo['id'] ?>(){
-            // var product_id    = $(this).data("productid");
-            // var product_name  = $(this).data("productname");
-            // var product_price = $(this).data("productprice");
-            // var quantity      = 1;
             document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "none";
             document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "flex";
             var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
             qty++;
             document.getElementById('qty<?= $fo['id'] ?>').value = qty;
-        }
 
+            var email = $("#hdnSession").data('value');
+            var product_id    = $('#shop_cart_btn<?= $fo['id'] ?>').data("productid");
+            var product_name  = $('#shop_cart_btn<?= $fo['id'] ?>').data("productname");
+            var product_price = $('#shop_cart_btn<?= $fo['id'] ?>').data("productprice");
+            var product_pic = $('#shop_cart_btn<?= $fo['id'] ?>').data("productpic");
+
+            item_<?= $fo['id'] ?> = {'email':email, 
+                                    'product_id':product_id, 
+                                    'product_name':product_name,
+                                    'product_price':product_price,
+                                    'product_qty':qty,
+                                    'product_pic':product_pic
+            };
+
+            cart.push(item_<?= $fo['id'] ?>);
+
+        }
         function change_qty_<?= $fo['id'] ?>(count){
             var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
             qty += count;
@@ -87,7 +103,42 @@
             if(qty<=0){
                 document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "block";
                 document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "none";
+                //remove from cart
+                remove_item(item_<?= $fo['id'] ?>['product_id']);
+            }
+            update_qty(item_<?= $fo['id'] ?>['product_id'], qty);
+        }
+
+        
+    <?php endforeach; ?>
+
+    function remove_item(product_id){
+        for (var i =0; i < cart.length; i++){
+            if (cart[i].product_id === product_id) {
+                cart.splice(i,1);
+                break;
             }
         }
-    </script>
-<?php endforeach; ?>
+    }
+
+    function update_qty(product_id, qty){
+            for (var i in cart){
+                if (cart[i].product_id == product_id) {
+                    cart[i].product_qty = qty;
+                    break; //Stop this loop, we found it!
+                 }
+            }
+        }
+
+    // function setCookie(cname, cvalue, exdays) {
+    //     var d = new Date();
+    //     d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+    //     var expires = "expires="+d.toUTCString();
+    //     document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+    // }
+    
+        function print_cart(){
+            console.log(cart);
+        }
+
+</script>
