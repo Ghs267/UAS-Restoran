@@ -1,7 +1,7 @@
 <?php //unset($_COOKIE['shopping_cart']); 
     //echo $_COOKIE['shopping_cart'];
 ?>
-<body>   
+<body onload="load_avalaible_cart();">   
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -108,6 +108,7 @@
 
             </table>
             <button onClick="getCart();">Check shopping cart array</button>
+            <button onClick="delete_cookie('shopping_cart');">Delete i guess</button>
         </div>
     </div>
 </div>
@@ -119,16 +120,48 @@
 <!-- Shopping Cart Button below -->
 <script type="text/javascript">
     var cart = [];
-    // function cart_check(){
-    //     var existingCookie = getCookie('shopping_cart');
-    //     //console.log(existingCookie);
-    //     cart_old = JSON.parse(existingCookie);
-        
-    //     //setCookie(cart, 1);
-    //     console.log(cart_old);
-    //     console.log(cart_old[0]);
-    //     //cart.push(getCookie('shopping_cart'));
-    // }
+    function load_avalaible_cart(){
+        <?php 
+            $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+            $cart_data = json_decode($cookie_data, true);
+            
+            foreach($cart_data as $keys => $values){
+                foreach($food as $fd){
+                    if($values['product_id'] == $fd['id']){
+                    ?>
+                    var item_<?= $fd['id'] ?> ="";
+                    //console.log('hey');
+                    var qty = parseInt(document.getElementById('qty<?= $fd['id'] ?>').value);
+                    var email = $("#hdnSession").data('value');
+                    var product_id    = $('#shop_cart_btn<?= $fd['id'] ?>').data("productid");
+                    var product_name  = $('#shop_cart_btn<?= $fd['id'] ?>').data("productname");
+                    var product_price = $('#shop_cart_btn<?= $fd['id'] ?>').data("productprice");
+                    var product_pic = $('#shop_cart_btn<?= $fd['id'] ?>').data("productpic");
+
+                    // console.log(qty);
+                    // console.log(email);
+                    // console.log(product_id);
+                    // console.log(product_name);
+                    // console.log(product_price);
+                    // console.log(product_pic);
+                    
+                    item_<?= $fd['id'] ?> = {'email':email, 
+                                    'product_id':product_id, 
+                                    'product_name':product_name,
+                                    'product_price':product_price,
+                                    'product_qty':qty,
+                                    'product_pic':product_pic
+                    };
+
+                    cart.push(item_<?= $fd['id'] ?>);
+                    setCookie(cart, 1);
+
+                    <?php
+                    }
+                }
+            }
+            ?>
+    }
     <?php foreach ($food as $fo): ?>
         var item_<?= $fo['id'] ?> = "";
 
@@ -206,6 +239,7 @@
 
     function delete_cookie( name ) {
         document.cookie = name + '=""; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        console.log()
     }
 
     function getCookie(cname) {
