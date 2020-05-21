@@ -51,7 +51,7 @@
                                 $flag = false;
 
                                 foreach($cart_data as $keys => $values){
-                                    if($values['product_name'] == $f['name']){
+                                    if($f['id'] == $values['product_id']){
                                     ?>
                                     <button style="display:none; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" data-productpic="<?= $f['gambar'] ?>" onClick="shopping_<?= $f['id'] ?>();">
                                         <i class="fas fa-fw fa-shopping-cart"></i>
@@ -120,16 +120,19 @@
 <!-- Shopping Cart Button below -->
 <script type="text/javascript">
     var cart = [];
+    <?php foreach($food as $f): ?>
+        var item_<?= $f['id'] ?> = "";
+    <?php endforeach; ?>
     function load_avalaible_cart(){
-        <?php 
-            $cookie_data = stripslashes($_COOKIE['shopping_cart']);
-            $cart_data = json_decode($cookie_data, true);
+        <?php
+            if(isset($_COOKIE['shopping_cart'])){
+                $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                $cart_data = json_decode($cookie_data, true);
             
             foreach($cart_data as $keys => $values){
                 foreach($food as $fd){
                     if($values['product_id'] == $fd['id']){
-                    ?>
-                    var item_<?= $fd['id'] ?> ="";
+        ?>
                     //console.log('hey');
                     var qty = parseInt(document.getElementById('qty<?= $fd['id'] ?>').value);
                     var email = $("#hdnSession").data('value');
@@ -137,13 +140,6 @@
                     var product_name  = $('#shop_cart_btn<?= $fd['id'] ?>').data("productname");
                     var product_price = $('#shop_cart_btn<?= $fd['id'] ?>').data("productprice");
                     var product_pic = $('#shop_cart_btn<?= $fd['id'] ?>').data("productpic");
-
-                    // console.log(qty);
-                    // console.log(email);
-                    // console.log(product_id);
-                    // console.log(product_name);
-                    // console.log(product_price);
-                    // console.log(product_pic);
                     
                     item_<?= $fd['id'] ?> = {'email':email, 
                                     'product_id':product_id, 
@@ -156,15 +152,17 @@
                     cart.push(item_<?= $fd['id'] ?>);
                     setCookie(cart, 1);
 
-                    <?php
+        <?php
                     }
                 }
             }
+        }
             ?>
+             
+            
     }
     <?php foreach ($food as $fo): ?>
-        var item_<?= $fo['id'] ?> = "";
-
+        
         function shopping_<?= $fo['id'] ?>(){
             document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "none";
             document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "flex";
@@ -194,7 +192,7 @@
             var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
             qty += count;
             document.getElementById('qty<?= $fo['id'] ?>').value = qty;
-
+            //console.log(qty);
             if(qty<=0){
                 document.getElementById('shop_cart_btn<?= $fo['id'] ?>').style.display = "block";
                 document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "none";
@@ -206,6 +204,7 @@
                 }
             }
             update_qty(item_<?= $fo['id'] ?>['product_id'], qty);
+            console.log(item_<?= $fo['id']?>);
             setCookie(cart, 1);
         }
 
@@ -238,7 +237,7 @@
     }
 
     function delete_cookie( name ) {
-        document.cookie = name + '=""; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+        document.cookie = name + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
         console.log()
     }
 
@@ -252,8 +251,8 @@
                 c = c.substring(1);
             }
             if (c.indexOf(name) == 0) {
-                //console.log(c.substring(name.length, c.length));
-                return c.substring(name.length, c.length);
+                console.log(c.substring(name.length, c.length));
+                //return c.substring(name.length, c.length);
             }
         }
         return "";
@@ -261,6 +260,10 @@
 
     function getCart(){
         console.log(cart);
+    }
+
+    function clear_cart(){
+        cart = "";
     }
 
 </script>
