@@ -1,3 +1,7 @@
+<?php //unset($_COOKIE['shopping_cart']); 
+    //echo $_COOKIE['shopping_cart'];
+?>
+<body>   
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -38,18 +42,64 @@
                                 <td>Hampir habis</td>
                             <?php endif; ?>
                             <td>
-                            <button style="display:block; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" data-productpic="<?= $f['gambar'] ?>" onClick="shopping_<?= $f['id'] ?>();">
-                                <i class="fas fa-fw fa-shopping-cart"></i>
-                            </button>
-                            <!-- insert PHP IF for isset cookie here -->
+                            
+                            <?php
+                            
+                            if(isset($_COOKIE['shopping_cart'])){
+                                $cookie_data = stripslashes($_COOKIE['shopping_cart']);
+                                $cart_data = json_decode($cookie_data, true);
+                                $flag = false;
+
+                                foreach($cart_data as $keys => $values){
+                                    if($values['product_name'] == $f['name']){
+                                    ?>
+                                    <button style="display:none; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" data-productpic="<?= $f['gambar'] ?>" onClick="shopping_<?= $f['id'] ?>();">
+                                        <i class="fas fa-fw fa-shopping-cart"></i>
+                                    </button>
+                                    <div id="qty_div<?= $f['id'] ?>" style="display:flex; width:7em;">
+                                        <button onClick="change_qty_<?= $f['id'] ?>(-1);" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button>
+                                        <input type="text" value="<?= $values['product_qty'] ?>" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;">
+                                        <button onClick="change_qty_<?= $f['id'] ?>(1);" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button>
+                                    </div>
+                                    <?php
+                                        $flag = true;
+                                        break;
+                                    }
+                                }
+
+                                if(!$flag){
+                            ?>
+                                <button style="display:block; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" data-productpic="<?= $f['gambar'] ?>" onClick="shopping_<?= $f['id'] ?>();">
+                                    <i class="fas fa-fw fa-shopping-cart"></i>
+                                </button>
+                                <div id="qty_div<?= $f['id'] ?>" style="display:none; width:7em;">
+                                    <button onClick="change_qty_<?= $f['id'] ?>(-1);" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button>
+                                    <input type="text" value="0" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;">
+                                    <button onClick="change_qty_<?= $f['id'] ?>(1);" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button>
+                                </div>
+                            <?php
+                                }
+                            }else{
+                                ?>
+
+                                <button style="display:block; width:7em;" id="shop_cart_btn<?= $f['id'] ?>" class="add_cart btn btn-success btn-block" data-productid="<?= $f['id'] ?>" data-productname="<?= $f['name'] ?>" data-productprice="<?= $f['price'] ?>" data-productpic="<?= $f['gambar'] ?>" onClick="shopping_<?= $f['id'] ?>();">
+                                    <i class="fas fa-fw fa-shopping-cart"></i>
+                                </button>
+                                <div id="qty_div<?= $f['id'] ?>" style="display:none; width:7em;">
+                                    <button onClick="change_qty_<?= $f['id'] ?>(-1);" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button>
+                                    <input type="text" value="0" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;">
+                                    <button onClick="change_qty_<?= $f['id'] ?>(1);" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button>
+                                </div>
+
+                                <?php
+                            }
+
+                            ?>
                             
                             <!-- make a loop to check each cookie element, break if found??? maybe I haven't figured that out halp TwT -->
 
                             <!-- Below should become else statement from the PHP isset cookie -->
-                            <div id="qty_div<?= $f['id'] ?>" style="display:none; width:7em;">
-                                <button onClick="change_qty_<?= $f['id'] ?>(-1);" class="btn btn-success" id="minus<?= $f['id'] ?>">-</button>
-                                <input type="text" value="0" id="qty<?= $f['id'] ?>" name="qty" readonly style="width:3em;">
-                                <button onClick="change_qty_<?= $f['id'] ?>(1);" class="btn btn-success" id="plus<?= $f['id'] ?>">+</button></div>
+                            
                             </td>
                         </tr>
                         <?php $i++; ?>
@@ -57,10 +107,11 @@
                 </tbody>
 
             </table>
-            <button onClick="getCookie('shopping_cart');">Check shopping cart cookie</button>
+            <button onClick="getCart();">Check shopping cart array</button>
         </div>
     </div>
 </div>
+</body>
 <!-- /.container-fluid -->
 
 <!-- End of Main Content -->
@@ -68,6 +119,16 @@
 <!-- Shopping Cart Button below -->
 <script type="text/javascript">
     var cart = [];
+    // function cart_check(){
+    //     var existingCookie = getCookie('shopping_cart');
+    //     //console.log(existingCookie);
+    //     cart_old = JSON.parse(existingCookie);
+        
+    //     //setCookie(cart, 1);
+    //     console.log(cart_old);
+    //     console.log(cart_old[0]);
+    //     //cart.push(getCookie('shopping_cart'));
+    // }
     <?php foreach ($food as $fo): ?>
         var item_<?= $fo['id'] ?> = "";
 
@@ -106,6 +167,10 @@
                 document.getElementById('qty_div<?= $fo['id'] ?>').style.display = "none";
                 //remove from cart
                 remove_item(item_<?= $fo['id'] ?>['product_id']);
+                //kalo cart kosong, cookie dihapus
+                if(!cart.length){
+                    delete_cookie('shopping_cart');
+                }
             }
             update_qty(item_<?= $fo['id'] ?>['product_id'], qty);
             setCookie(cart, 1);
@@ -127,7 +192,7 @@
             for (var i in cart){
                 if (cart[i].product_id == product_id) {
                     cart[i].product_qty = qty;
-                    break; //Stop this loop, we found it!
+                    break;
                  }
             }
         }
@@ -138,36 +203,30 @@
         var expires = "expires="+d.toUTCString();
         document.cookie = 'shopping_cart' + "=" + JSON.stringify(cvalue) + ";" + expires + ";path=/";
     }
-    
-        function print_cart(){
-            console.log(JSON.stringify(cart));
-        }
 
-        // function bakeCookie(value){
-        //     var cookie = ['shopping_cart', '=', JSON.stringify(value), '; domain=.', window.location.host.toString(), '; path=/;'].join('');
-        //     document.cookie = cookie;
-        // }
+    function delete_cookie( name ) {
+        document.cookie = name + '=""; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
 
-        // function read_cookie() {
-        //     var result = document.cookie.match(new RegExp('shopping_cart' + '=([^;]+)'));
-        //     result && (result = JSON.parse(result[1]));
-        //     console.log(result);
-        // }
-
-        function getCookie(cname) {
-            var name = cname + "=";
-            var ca = document.cookie.split(';');
-            //console.log(ca);
-            for(var i = 0; i < ca.length; i++) {
-                var c = ca[i];
-                while (c.charAt(0) == ' ') {
+    function getCookie(cname) {
+        var name = cname + "=";
+        var ca = document.cookie.split(';');
+        //console.log(ca);
+        for(var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
                 c = c.substring(1);
-                }
-                if (c.indexOf(name) == 0) {
-                console.log(c.substring(name.length, c.length));
-                }
             }
-            return "";
+            if (c.indexOf(name) == 0) {
+                //console.log(c.substring(name.length, c.length));
+                return c.substring(name.length, c.length);
+            }
         }
+        return "";
+    }
+
+    function getCart(){
+        console.log(cart);
+    }
 
 </script>
