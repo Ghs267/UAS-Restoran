@@ -1,6 +1,10 @@
 <?php //unset($_COOKIE['shopping_cart']); 
     //echo $_COOKIE['shopping_cart'];
 ?>
+<head>
+    <script src="<?php echo base_url('assets/js/jquery-3.5.1.min.js'); ?>"></script>
+</head>
+
 <body onload="load_avalaible_cart();">   
 <!-- Begin Page Content -->
 <div class="container-fluid">
@@ -16,7 +20,7 @@
             <?php endif; ?>
 
             <?= $this->session->flashdata('messages'); ?>
-            <input type="hidden" id="hdnSession" data-value="<?= $_SESSION['email'] ?>">
+            <input type="hidden" id="hdnSession" data-value="<?= $_SESSION['user_id'] ?>">
             <table class="table table-hover">
                 <thead>
                     <th scope="col">#</th>
@@ -135,13 +139,14 @@
         ?>
                     //console.log('hey');
                     var qty = parseInt(document.getElementById('qty<?= $fd['id'] ?>').value);
-                    var email = $("#hdnSession").data('value');
+                    var id = $("#hdnSession").data('value');
                     var product_id    = $('#shop_cart_btn<?= $fd['id'] ?>').data("productid");
                     var product_name  = $('#shop_cart_btn<?= $fd['id'] ?>').data("productname");
                     var product_price = $('#shop_cart_btn<?= $fd['id'] ?>').data("productprice");
                     var product_pic = $('#shop_cart_btn<?= $fd['id'] ?>').data("productpic");
                     
-                    item_<?= $fd['id'] ?> = {'email':email, 
+                    item_<?= $fd['id'] ?> = {
+                                    'user_id':id, 
                                     'product_id':product_id, 
                                     'product_name':product_name,
                                     'product_price':product_price,
@@ -170,13 +175,14 @@
             qty++;
             document.getElementById('qty<?= $fo['id'] ?>').value = qty;
 
-            var email = $("#hdnSession").data('value');
+            var id = $("#hdnSession").data('value');
             var product_id    = $('#shop_cart_btn<?= $fo['id'] ?>').data("productid");
             var product_name  = $('#shop_cart_btn<?= $fo['id'] ?>').data("productname");
             var product_price = $('#shop_cart_btn<?= $fo['id'] ?>').data("productprice");
             var product_pic = $('#shop_cart_btn<?= $fo['id'] ?>').data("productpic");
 
-            item_<?= $fo['id'] ?> = {'email':email, 
+            item_<?= $fo['id'] ?> = {
+                                    'user_id':id, 
                                     'product_id':product_id, 
                                     'product_name':product_name,
                                     'product_price':product_price,
@@ -190,6 +196,11 @@
         }
         function change_qty_<?= $fo['id'] ?>(count){
             var qty = parseInt(document.getElementById('qty<?= $fo['id'] ?>').value);
+            var limit = parseInt(<?= $fo['stock'] ?>);
+            if((qty+count) > limit){
+                alert('Maximum quantity reached');
+                return false;
+            }
             qty += count;
             document.getElementById('qty<?= $fo['id'] ?>').value = qty;
             //console.log(qty);

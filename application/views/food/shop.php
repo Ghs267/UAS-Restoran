@@ -1,4 +1,7 @@
 <?php //echo var_dump($_COOKIE['shopping_cart']); ?>
+<head>
+    <script src="<?php echo base_url('assets/js/jquery-3.5.1.min.js'); ?>"></script>
+</head>
 
 <body onload="load_avalaible_cart();">
 <!-- Begin Page Content -->
@@ -6,7 +9,7 @@
 
     <!-- Page Heading -->
     <h1 class="h3 mb-4 text-gray-800"><?= $title; ?></h1>
-    <input type="hidden" id="hdnSession" data-value="<?= $_SESSION['email'] ?>">
+    <input type="hidden" id="hdnSession" data-value="<?= $_SESSION['user_id'] ?>">
     <table class="table table-hover">
         <!-- <thead>
             <th scope="col">#</th>
@@ -67,7 +70,7 @@
     </table>
 
     <button onClick="clear_cart();">Clear cart</button>
-    <button>Checkout</button>
+    <button onClick="checkout();">Checkout</button>
 
 
 </div>
@@ -92,15 +95,16 @@
                 foreach($food as $fd){
                     if($values['product_id'] == $fd['id']){
         ?>
-                    console.log('hey');
+                    //console.log('hey');
                     var qty = $("#product_qty_<?= $values['product_id'] ?>").data('value');
-                    var email = $("#hdnSession").data('value');
+                    var id = $("#hdnSession").data('value');
                     var product_id    = $("#product_id_<?= $values['product_id'] ?>").data('value');
                     var product_name  = $("#product_name_<?= $values['product_id'] ?>").data('value');
                     var product_price = $("#product_price_<?= $values['product_id'] ?>").data('value');
                     var product_pic = $("#product_pic_<?= $values['product_id'] ?>").data('value');
                     
-                    item_<?= $values['product_id'] ?> = {'email':email, 
+                    item_<?= $values['product_id'] ?> = {
+                                    'user_id':id, 
                                     'product_id':product_id, 
                                     'product_name':product_name,
                                     'product_price':product_price,
@@ -117,7 +121,6 @@
             }
         }
             ?>
-    console.log(cart);
             
     }
     
@@ -148,6 +151,21 @@
         document.cookie = 'shopping_cart=; expires=Thu, 01 Jan 1970 00:00:01 GMT;path=/';
         location.reload();
         return false;
+    }
+
+    function checkout(){
+        $.ajax({
+            url:"<?= base_url() ?>Food/checkout",
+            method:"POST",
+            data: {
+                cart_data: cart
+            },
+            success: function(){
+                alert('success!');
+                clear_cart();
+                window.href('<?= base_url() ?>');
+            }
+        })
     }
 
 </script>

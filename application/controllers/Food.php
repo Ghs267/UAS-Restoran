@@ -44,21 +44,16 @@ class Food extends CI_Controller
         $this->load->view('templates/footer');
     }
 
-    public function delete_item(){
-        echo var_dump($_COOKIE['shopping_cart']); die;
-        $cookie_data = stripslashes($_COOKIE['shopping_cart']);
-        $cart_data = json_decode($cookie_data, true);
-        $id = $_POST['delete'];
-        //echo var_dump($id); die;
+    public function checkout()
+    {
+        //$post = $this->input->post();
+        $cart_data = $_POST['cart_data'];
+
+        $this->food->insert_cart($_SESSION['user_id']);
         foreach($cart_data as $keys => $values)
         {
-            echo var_dump($cart_data[$keys]['product_id']); die;
-            if($cart_data[$keys]['product_id'] == $id){
-                unset($cart_data[$keys]);
-                $item_data = json_encode($cart_data);
-                setcookie("shopping_cart", $item_data, time() + (86400 * 30));
-                header(base_url() . 'food/shop');
-            }
+            $this->food->insert_detail($values['product_id'], $value['product_name'], $values['product_qty'], $values['product_price'], $values['product_pic']);
         }
+
     }
 }
