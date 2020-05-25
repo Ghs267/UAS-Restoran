@@ -32,7 +32,7 @@ class ShopCart_model extends CI_Model
             'qty' => $qty
         );
 
-        $this->db->insert('shopcart_detail', $data);
+        $this->db->insert('shop_cart_detail', $data);
     }
 
 }

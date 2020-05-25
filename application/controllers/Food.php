@@ -56,8 +56,9 @@ class Food extends CI_Controller
             $this->shopCart->insert_detail($id[$i], $qty[$i]);
         }
         //setcookie("shopping_cart", "", time() - 3600, "/");
-        $this->session->set_userdata('order_status', 'completed');
-        redirect('Food/index');
+        delete_cookie("shopping_cart");
+        //$this->session->set_userdata('order_status', 'completed');
+        redirect(base_url().'OrderList/index');
     }
 
     public function checkout_AJAX()
@@ -72,3 +73,5 @@ class Food extends CI_Controller
         }
     }
 }
+
+?>
