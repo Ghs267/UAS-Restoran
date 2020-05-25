@@ -1,11 +1,13 @@
 <?php //unset($_COOKIE['shopping_cart']); 
     //echo $_COOKIE['shopping_cart'];
+    
 ?>
+
 <head>
     <script src="<?php echo base_url('assets/js/jquery-3.5.1.min.js'); ?>"></script>
 </head>
 
-<body onload="load_avalaible_cart();">   
+<body onload="order_status(); load_avalaible_cart();">   
 <!-- Begin Page Content -->
 <div class="container-fluid">
 
@@ -127,6 +129,20 @@
     <?php foreach($food as $f): ?>
         var item_<?= $f['id'] ?> = "";
     <?php endforeach; ?>
+    function order_status(){
+        <?php 
+            if(isset($_SESSION['order_status'])){
+                $this->session->unset_userdata('order_status'); //gatau kenapa ya, ni session kaga mau ke unset anjer.
+                //echo var_dump('test'); die;
+        ?>
+            console.log("ada session order status");
+            clear_cart();
+            delete_cookie();
+            location.reload();
+        <?php
+            }
+        ?>
+    }
     function load_avalaible_cart(){
         <?php
             if(isset($_COOKIE['shopping_cart'])){

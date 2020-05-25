@@ -1,4 +1,6 @@
-<?php //echo var_dump($_COOKIE['shopping_cart']); ?>
+<?php if(isset($_COOKIE['shopping_cart'])){
+    echo var_dump($_COOKIE['shopping_cart']); //die;
+    } ?>
 <head>
     <script src="<?php echo base_url('assets/js/jquery-3.5.1.min.js'); ?>"></script>
 </head>
@@ -70,7 +72,23 @@
     </table>
 
     <button onClick="clear_cart();">Clear cart</button>
-    <button onClick="checkout();">Checkout</button>
+    //pake php biasa
+    <?php if(isset($_COOKIE['shopping_cart']))
+    {
+    ?>
+        <?= form_open('Food/checkout'); ?>
+        <?php foreach($cart_data as $keys => $values): ?>
+            <input type="hidden" name="product_id[]" value="<?= $values['product_id'] ?>">
+            <input type="hidden" name="product_qty[]" value="<?= $values['product_qty'] ?>">
+        <?php endforeach; ?>
+            <button type="submit">Checkout pake PHP POST</button>
+        <?= form_close() ?>
+    <?php
+    } 
+    ?>
+
+    <button onClick="checkout();">Checkout pake AJAX</button>
+    
 
 
 </div>
@@ -155,7 +173,7 @@
 
     function checkout(){
         $.ajax({
-            url:"<?= base_url() ?>Food/checkout",
+            url:"<?= base_url() ?>Food/checkout_AJAX",
             method:"POST",
             data: {
                 cart_data: cart

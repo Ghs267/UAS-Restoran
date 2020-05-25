@@ -7,7 +7,12 @@ class ShopCart_model extends CI_Model
     public function insert_cart($id_user)
     {
         $tanggal_order = date('Y-m-d H:i:s');
+        $res = $this->db->query('SELECT * FROM shop_cart');
+        $id =  $res->num_rows();
+        $id++;
+        
         $data = array(
+            'id_order' => $id,
             'id_user' => $id_user,
             'tanggal_order' => $tanggal_order
         );
@@ -16,21 +21,18 @@ class ShopCart_model extends CI_Model
             
     }
 
-    public function insert_detail($id_menu, $nama_menu, $qty, $price, $gambar)
+    public function insert_detail($id_menu, $qty)
     {
         $res = $this->db->query('SELECT * FROM shop_cart');
-        $id =  ($res->num_rows()) + 1;
+        $id =  $res->num_rows();
 
         $data = array(
             'id_order' => $id,
             'id_menu' => $id_menu,
-            'nama_menu' => $nama_menu,
-            'qty' => $qty,
-            'price' => $price,
-            'gambar' => $gambar
+            'qty' => $qty
         );
 
-        $this->db->insert('shop_detail', $data);
+        $this->db->insert('shopcart_detail', $data);
     }
 
 }

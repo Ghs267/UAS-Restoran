@@ -7,6 +7,7 @@ class Food extends CI_Controller
     {
         parent::__construct();
         $this->load->model('Food_model', 'food');
+        $this->load->model('ShopCart_model', 'shopCart');
         is_logged_in();
     }
     public function index()
@@ -46,14 +47,28 @@ class Food extends CI_Controller
 
     public function checkout()
     {
-        //$post = $this->input->post();
-        $cart_data = $_POST['cart_data'];
+        $post = $this->input->post();
+        $id = $this->input->post('product_id');
+        $qty = $this->input->post('product_qty');
+        $len = count($id);
+        $this->shopCart->insert_cart($_SESSION['user_id']);
+        for($i=0;$i<$len;$i++){
+            $this->shopCart->insert_detail($id[$i], $qty[$i]);
+        }
+        //setcookie("shopping_cart", "", time() - 3600, "/");
+        $this->session->set_userdata('order_status', 'completed');
+        redirect('Food/index');
+    }
 
-        $this->food->insert_cart($_SESSION['user_id']);
+    public function checkout_AJAX()
+    {
+        $cart_data = $this->input->post('cart_data');
+
+        $this->shopCart->insert_cart($_SESSION['user_id']);
+
         foreach($cart_data as $keys => $values)
         {
-            $this->food->insert_detail($values['product_id'], $value['product_name'], $values['product_qty'], $values['product_price'], $values['product_pic']);
+            $this->food->insert_detail($values['product_id'], $value['product_qty']);
         }
-
     }
 }
