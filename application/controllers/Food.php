@@ -69,9 +69,7 @@ class Food extends CI_Controller
 
         foreach($cart_data as $keys => $values)
         {
-            $this->food->insert_detail($values['product_id'], $value['product_qty']);
+            $this->food->insert_detail($values['product_id'], $values['product_qty']);
         }
     }
 }
-
-?>
