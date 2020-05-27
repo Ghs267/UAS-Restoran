@@ -9,6 +9,11 @@ class Auth extends CI_Controller
         $this->load->library('form_validation');
     }
 
+    public function homepage()
+    {
+        $this->load->view('frontend/index.php');
+    }
+
     public function index()
     {
         if ($this->session->userdata('email')) {
