@@ -24,6 +24,7 @@
                     <th scope="col">Category</th>
                     <th scope="col">Price</th>
                     <th scope="col">Stock</th>
+                    <th scope="col">Picture</th>
                     <th scope="col">Action</th>
                 </thead>
                 <tbody>
@@ -35,6 +36,9 @@
                             <td><?= $f['category']; ?></td>
                             <td>Rp. <?= $f['price']; ?></td>
                             <td><?= $f['stock']; ?></td>
+                            <td>
+                                <div><img src="<?= base_url('') . $f['gambar']; ?>" style="width:5em;height:5em;"></div>
+                            </td>
                             <td>
                                 <a href="" data-toggle="modal" data-target="#editMenu<?= $f['id'] ?>" class="badge badge-success"><i class="far fa-fw fa-edit"></i></a>
                                 <a href="<?= base_url('admin/deleteFood/' . $f['id']) ?>" class="badge badge-danger" onclick="return confirm('Are you sure want to delete <?= $f['name']; ?> ?')"><i class="far fa-fw fa-trash-alt"></i></a>
@@ -79,6 +83,12 @@
                     </div>
                     <div class="form-group">
                         <input type="text" class="form-control" name="stock" id="stock" placeholder="Stock">
+                    </div>
+                    <div class="form-group">
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image" name="image">
+                            <label class="custom-file-label" for="image">Choose file</label>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

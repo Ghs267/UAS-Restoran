@@ -12,7 +12,9 @@ class OrderList extends CI_Controller
     public function index()
     {
         $data['order'] = $this->order->getOrderList();
-        $this->load->view('food/order', $data);
+        $this->load->view('templates/head.php');
+        $this->load->view('frontend/history', $data);
+        $this->load->view('templates/foot.php');
     }
 }
 

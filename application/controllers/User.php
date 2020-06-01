@@ -10,18 +10,6 @@ class User extends CI_Controller
         is_logged_in();
     }
 
-    public function index()
-    {
-        $data['title'] = 'My Profile';
-        $data['user'] = $this->db->get_where('user', ['email' =>
-        $this->session->userdata('email')])->row_array();
-
-        $this->load->view('templates/header', $data);
-        $this->load->view('templates/sidebar', $data);
-        $this->load->view('templates/topbar', $data);
-        $this->load->view('user/index', $data);
-        $this->load->view('templates/footer');
-    }
 
     public function edit()
     {
@@ -33,11 +21,9 @@ class User extends CI_Controller
         $this->form_validation->set_rules('address', 'Address', 'required|trim');
 
         if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('user/edit', $data);
-            $this->load->view('templates/footer');
+            $this->load->view('templates/head.php', $data);
+            $this->load->view('frontend/editprofile.php', $data);
+            $this->load->view('templates/foot.php');
         } else {
             $fname = $this->input->post('fname');
             $lname = $this->input->post('lname');
@@ -75,7 +61,7 @@ class User extends CI_Controller
 
             $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
             Your profile has been updated!!</div>');
-            redirect('user');
+            redirect(base_url('home/profile'));
         }
     }
     public function changePassword()
@@ -90,23 +76,21 @@ class User extends CI_Controller
 
 
         if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('user/changepassword', $data);
-            $this->load->view('templates/footer');
+            $this->load->view('templates/head.php', $data);
+            $this->load->view('frontend/changepassword.php', $data);
+            $this->load->view('templates/foot.php');
         } else {
             $curr = $this->input->post('current_password');
             $new = $this->input->post('new_password1');
             if (!password_verify($curr, $data['user']['password'])) {
                 $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                 Wrong Current Password!</div>');
-                redirect('user/changepassword');
+                redirect(base_url('home/changepassword'));
             } else {
                 if ($curr == $new) {
                     $this->session->set_flashdata('message', '<div class="alert alert-danger" role="alert">
                     New Password cannot be the same as current password!</div>');
-                    redirect('user/changepassword');
+                    redirect(base_url('home/changepassword'));
                 } else {
                     // true password
                     $pass_hash = password_hash($new, PASSWORD_DEFAULT);
@@ -117,7 +101,7 @@ class User extends CI_Controller
 
                     $this->session->set_flashdata('message', '<div class="alert alert-success" role="alert">
                     Password Changed!</div>');
-                    redirect('user/changepassword');
+                    redirect(base_url('home/changepassword'));
                 }
             }
         }

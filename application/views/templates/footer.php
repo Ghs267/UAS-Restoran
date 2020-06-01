@@ -2,7 +2,7 @@
 <footer class="sticky-footer bg-white">
     <div class="container my-auto">
         <div class="copyright text-center my-auto">
-            <span>Copyright &copy; UAS Login <?= date('Y'); ?></span>
+            <span>Copyright &copy; BOBA<small>witch</small> <?= date('Y'); ?></span>
         </div>
     </div>
 </footer>

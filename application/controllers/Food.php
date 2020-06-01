@@ -21,11 +21,11 @@ class Food extends CI_Controller
 
 
         if ($this->form_validation->run() == false) {
-            $this->load->view('templates/header', $data);
-            $this->load->view('templates/sidebar', $data);
-            $this->load->view('templates/topbar', $data);
-            $this->load->view('food/index', $data);
-            $this->load->view('templates/footer');
+            // $this->load->view('templates/header', $data);
+            // $this->load->view('templates/sidebar', $data);
+            // $this->load->view('templates/topbar', $data);
+            $this->load->view('frontend/menu', $data);
+            // $this->load->view('templates/footer');
         }
     }
 
@@ -55,21 +55,19 @@ class Food extends CI_Controller
         for($i=0;$i<$len;$i++){
             $this->shopCart->insert_detail($id[$i], $qty[$i]);
         }
-        //setcookie("shopping_cart", "", time() - 3600, "/");
         delete_cookie("shopping_cart");
-        //$this->session->set_userdata('order_status', 'completed');
-        redirect(base_url().'OrderList/index');
+        $_SESSION['rate_order'] = $this->shopCart->get_id();
+        redirect(base_url().'home/history');
     }
 
-    public function checkout_AJAX()
+    public function rate()
     {
-        $cart_data = $this->input->post('cart_data');
+        $star = $this->input->post('rating');
+        $order_id = $_SESSION['rate_order'];
 
-        $this->shopCart->insert_cart($_SESSION['user_id']);
-
-        foreach($cart_data as $keys => $values)
-        {
-            $this->food->insert_detail($values['product_id'], $values['product_qty']);
-        }
+        //panggil model buat masukin rating ke tabel
+        $this->shopCart->insert_rating($star, $order_id);
+        unset($_SESSION['rate_order']);
+        redirect(base_url().'home/history');
     }
 }

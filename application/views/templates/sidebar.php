@@ -1,12 +1,11 @@
 <!-- Sidebar -->
-<ul class="navbar-nav bg-gradient-danger sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-dark sidebar sidebar-dark accordion" id="accordionSidebar">
 
     <!-- Sidebar - Brand -->
-    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('user'); ?>">
-        <div class="sidebar-brand-icon rotate-n-15">
-            <i class="fab fa-apple-pay"></i>
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?= base_url('admin/my'); ?>">
+        <div class="sidebar-brand-icon rotate-n-15 fas fa-glass-cheers">
         </div>
-        <div class="sidebar-brand-text mx-3">UAS Login </div>
+        <div class=" sidebar-brand-text mx-3">BOBA<small>witch</small> </div>
     </a>
 
     <!-- Divider -->

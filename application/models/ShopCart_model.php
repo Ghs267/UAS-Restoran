@@ -35,4 +35,19 @@ class ShopCart_model extends CI_Model
         $this->db->insert('shop_cart_detail', $data);
     }
 
+    public function get_id()
+    {
+        $res = $this->db->query('SELECT * FROM shop_cart');
+        $id =  $res->num_rows();
+
+        return $id;
+    }
+
+    public function insert_rating($rate, $id)
+    {
+        $this->db->set('rating', $rate);
+        $this->db->where('id_order', $id);
+        $this->db->update('shop_cart');
+    }
+
 }
